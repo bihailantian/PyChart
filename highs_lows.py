@@ -10,7 +10,7 @@ first_date = datetime.strptime("2014-07-01", "%Y-%m-%d")
 print(first_date)
 
 # 读取文件头
-filename = 'sitka_weather_2014.csv'
+filename = 'death_valley_2014.csv'
 with open(filename) as f:
     reader = csv.reader(f)
     head_row = next(reader)
@@ -23,12 +23,16 @@ with open(filename) as f:
     #  从文件中获取日期、最高气温和最低气温
     dates, highs, lows = [], [], []
     for row in reader:
-        low = int(row[3])
-        lows.append(low)
-        current_date = datetime.strptime(row[0], '%Y-%m-%d')
-        dates.append(current_date)
-        high = int(row[1])
-        highs.append(high)
+        try:
+            current_date = datetime.strptime(row[0], '%Y-%m-%d')
+            high = int(row[1])
+            low = int(row[3])
+        except ValueError:
+            print(current_date, 'missing data')
+        else:
+            dates.append(current_date)
+            highs.append(high)
+            lows.append(low)
 
     print(highs)
 
